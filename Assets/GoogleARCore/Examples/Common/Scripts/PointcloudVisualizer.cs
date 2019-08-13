@@ -256,9 +256,9 @@ namespace GoogleARCore.Examples.Common
                 
                // File.AppendAllText(path, content);
             }
-            m_Frames += 1;
-            string tracker = "Frame:" + m_Frames + "\n";
-            sr.WriteLine(tracker);
+            //m_Frames += 1;
+           // string tracker = "Frame:" + m_Frames + "\n";
+            //sr.WriteLine(tracker);
             sr.Close();
             }
         
