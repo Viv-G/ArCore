@@ -1,0 +1,40 @@
+﻿<Properties StartupConfiguration="{CB0AE3AE-CDCE-9764-CA59-59A2E0551C13}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GoogleARCore/Examples/Common/Scripts/PointcloudVisualizer.cs">
+    <Files>
+      <File FileName="Assets/GoogleARCore/Examples/Common/Scripts/PointcloudVisualizer.cs" Line="208" Column="15" />
+      <File FileName="Assets/Points.txt" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="ArCore" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="GoogleARCore" expanded="True">
+                <Node name="Examples" expanded="True">
+                  <Node name="Common" expanded="True">
+                    <Node name="Scripts" expanded="True">
+                      <Node name="PointcloudVisualizer.cs" selected="True" />
+                    </Node>
+                  </Node>
+                  <Node name="HelloAR" expanded="True">
+                    <Node name="Scripts" expanded="True" />
+                  </Node>
+                </Node>
+                <Node name="SDK" expanded="True">
+                  <Node name="Scripts" expanded="True" />
+                </Node>
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="1499d325-b639-4ff9-a0d5-57a3932676ad" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
