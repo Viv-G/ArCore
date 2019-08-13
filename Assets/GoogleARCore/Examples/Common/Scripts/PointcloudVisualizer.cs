@@ -119,7 +119,9 @@ namespace GoogleARCore.Examples.Common
         private LinkedList<PointInfo> m_CachedPoints;
         private LinkedList<PointInfo> m_SavedPoints;
 
-        
+        private int m_Track;
+        private int m_Frames;
+
 
         /// <summary>
         /// The Unity Start() method.
@@ -148,8 +150,11 @@ namespace GoogleARCore.Examples.Common
 
             m_CachedPoints = new LinkedList<PointInfo>();
             m_SavedPoints = new LinkedList<PointInfo>();
+            ExportSetUp();
 
-           
+            
+
+
         }
 
         /// <summary>
@@ -157,7 +162,7 @@ namespace GoogleARCore.Examples.Common
         /// </summary>
         public void OnDisable()
         {
-            _ClearCachedPoints();
+            _ClearCachedPoints();    
         }
 
         /// <summary>
@@ -184,10 +189,10 @@ namespace GoogleARCore.Examples.Common
                 _UpdateColor();
             }
 
-            ExportPoints();
             _AddAllPointsToCache();
             _AddAllPointsToSave();
             _UpdateMesh();
+            ExportPoints();
         }
 
         /// <summary>
@@ -199,34 +204,62 @@ namespace GoogleARCore.Examples.Common
             m_Mesh.Clear();
         }
 
-        public void ExportPoints()
+        public void ExportSetUp()
         {
-            // Path of file
-            string path = Application.persistentDataPath + @"/Points.txt";
-            StreamWriter sr = System.IO.File.CreateText(path);
-            //Vector2 ExportpSave;
-            //ExportpSave = m_SavedPoints.Select(p => p.Size).ToArray();
+           // Path of file
+        string path = Application.persistentDataPath + @"/Points.txt";
 
+        //Vector2 ExportpSave;
+        //ExportpSave = m_SavedPoints.Select(p => p.Size).ToArray();
+
+        // Create Writing Object
+        StreamWriter sr = new StreamWriter(path);
+          
             // Create File if it doesnt exist
             if (!File.Exists(path)) {
                 Debug.Log(path + " doesn't exist... Creating...");
+                sr = File.CreateText(path);
                 //StreamWriter sr = System.IO.File.CreateText(path);
                 sr.WriteLine("Points \n\n");
-                sr.Close();
                     }
+            sr.Close();
+        }
+
+
+        public void ExportPoints()
+        {
+            //// Path of file
+            string path = Application.persistentDataPath + @"/Points.txt";
+
+            ////Vector2 ExportpSave;
+            ////ExportpSave = m_SavedPoints.Select(p => p.Size).ToArray();
+
+            //// Create Writing Object
+            StreamWriter sr = new StreamWriter(path, append: true);
+          
+            //// Create File if it doesnt exist
+            //if (!File.Exists(path)) {
+            //    Debug.Log(path + " doesn't exist... Creating...");
+            //    sr = File.CreateText(path);
+            //    //StreamWriter sr = System.IO.File.CreateText(path);
+            //    sr.WriteLine("Points \n\n");
+            //        }
             // Content of the file
             for (int i = 0; i < Frame.PointCloud.PointCount; i++)
             {
-                Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
-            
-                string content = point + "\n";
+                Vector3 point = Frame.PointCloud.GetPointAsStruct(i);           
+                string content = m_Track + "," + point + "\n";
                 sr.WriteLine(content);
-                string tracker = i + "\n";
-                Debug.Log(tracker);
+                m_Track += 1;
+             //   string tracker = i + "\n";
+             //   Debug.Log(tracker);
+                
                // File.AppendAllText(path, content);
             }
+            m_Frames += 1;
+            string tracker = "Frame:" + m_Frames + "\n";
+            sr.WriteLine(tracker);
             sr.Close();
-                // Add text to it
             }
         
         
