@@ -121,7 +121,11 @@ namespace GoogleARCore.Examples.Common
 
         private int m_Track;
         private int m_Frames;
-
+        private Vector3 m_prevARPosePosition;
+        public Pose initPose;
+        public Pose curPose;
+        public Pose poseTransform;
+//        private int m_init;
 
         /// <summary>
         /// The Unity Start() method.
@@ -150,6 +154,7 @@ namespace GoogleARCore.Examples.Common
 
             m_CachedPoints = new LinkedList<PointInfo>();
             m_SavedPoints = new LinkedList<PointInfo>();
+            initPose = Frame.Pose;
             ExportSetUp();
 
             
@@ -220,8 +225,14 @@ namespace GoogleARCore.Examples.Common
                 Debug.Log(path + " doesn't exist... Creating...");
                 sr = File.CreateText(path);
                 //StreamWriter sr = System.IO.File.CreateText(path);
-                sr.WriteLine("Points \n\n");
+                sr.WriteLine("Points \n");
                     }
+            else
+            {
+                Debug.Log(path + " Does exist... Clearing...");
+                sr = File.CreateText(path);
+                sr.WriteLine("Points: \n");
+            }
             sr.Close();
         }
 
@@ -230,31 +241,44 @@ namespace GoogleARCore.Examples.Common
         {
             //// Path of file
             string path = Application.persistentDataPath + @"/Points.txt";
-
-            ////Vector2 ExportpSave;
-            ////ExportpSave = m_SavedPoints.Select(p => p.Size).ToArray();
-
-            //// Create Writing Object
             StreamWriter sr = new StreamWriter(path, append: true);
-          
-            //// Create File if it doesnt exist
-            //if (!File.Exists(path)) {
-            //    Debug.Log(path + " doesn't exist... Creating...");
-            //    sr = File.CreateText(path);
-            //    //StreamWriter sr = System.IO.File.CreateText(path);
-            //    sr.WriteLine("Points \n\n");
-            //        }
+            //Run on First output
+//            if (m_init == 0)
+//            {
+//                Quaternion rot = Frame.Pose.rotation;
+//                string content = Frame.Pose.position.x + "," + Frame.Pose.position.y + "," + Frame.Pose.position.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
+//                sr.WriteLine(content);
+//                m_init = 1;
+//            }
+            // Vector3 ExportpSave = m_SavedPoints.Select(p => p.Position).ToArray();
+            //var ExportpSave = m_SavedPoints.Select(p => p.Position);
+            //sr.WriteLine(ExportpSave);
+
+            //Debug.Log("ExportpSave" + ExportpSave + "\n");
             // Content of the file
-            for (int i = 0; i < Frame.PointCloud.PointCount; i++)
+            if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
             {
-                Vector3 point = Frame.PointCloud.GetPointAsStruct(i);           
-                string content = m_Track + "," + point + "\n";
-                sr.WriteLine(content);
-                m_Track += 1;
-             //   string tracker = i + "\n";
-             //   Debug.Log(tracker);
-                
-               // File.AppendAllText(path, content);
+                for (int i = 0; i < Frame.PointCloud.PointCount; i++)
+                {
+                    Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
+                    Vector3 pos = Frame.Pose.position;
+                    Quaternion rot = Frame.Pose.rotation;
+
+                    //curPose = Frame.Pose;
+                    //poseTransform = curPose.GetTransformedBy(initPose);
+                    //transform.SetPositionAndRotation(poseTransform.position, poseTransform.rotation);
+                    //Vector3 newPoint = transform.TransformPoint(point);
+
+                    //Vector3 newpoint = point, poseTransform.rotation);
+                    //Vector3 curPost = Frame.Pose.position;
+                    // string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
+                    string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
+                    sr.WriteLine(content);
+                    m_Track += 1;
+
+                    //   string tracker = i + "\n";
+                    //   Debug.Log(tracker);
+                }
             }
             //m_Frames += 1;
            // string tracker = "Frame:" + m_Frames + "\n";
@@ -384,6 +408,7 @@ namespace GoogleARCore.Examples.Common
             if (m_SavedPoints.Count >= m_MaxPointCount)
             {
                 m_SavedPoints.RemoveFirst();
+            
             }
 
             m_SavedPoints.AddLast(new PointInfo(point, new Vector2(m_DefaultSize, m_DefaultSize),

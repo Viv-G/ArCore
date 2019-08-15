@@ -477,7 +477,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: d80decf816b39c56d5f370970ca63fdc
+      Hash: 4c086acfe35221fd0e06bf674c5d1596
     assemblyName: Assembly-CSharp.dll
     namespaceName: GoogleARCore.Examples.Common
     className: PointcloudVisualizer
@@ -868,4 +868,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/GoogleARCore/Examples/HelloAR/Scenes/HelloAR.unity
-  playerPath: /Users/Viv/Unity/ArCore/aPP4.apk
+  playerPath: /Users/Viv/Unity/ArCore/app5.apk
