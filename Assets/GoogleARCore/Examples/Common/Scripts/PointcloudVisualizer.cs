@@ -248,20 +248,19 @@ namespace GoogleARCore.Examples.Common
 
         public void ExportMeshPoints()
         {
+            m_Frames++;
             string path = Application.persistentDataPath + @"/Points.txt";
             StreamWriter sr = new StreamWriter(path);
-            m_SaveMesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
+            int count = 1;
+            //m_SaveMesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
             var pts = m_SavedPoints.Select(p => p.Position).ToArray();
             foreach (Vector3 m_vec in pts) {
                 string m_Print = m_vec.x + "," + m_vec.y + "," + m_vec.z;
                 sr.WriteLine(m_Print);
+                count++;
             }
-
-
-
-            //var pts = m_SaveMesh.vertices;
-            //string pPrint = m_SavedPoints.Select(p => p.Position).ToString();
-            // string Pprint = m_SaveMesh.vertices.ToString();
+            Debug.Log("Frame: " + m_Frames + " Wrote: " + count + " Points \n");
+            //Debug.Log("Wrote: " + count + "Points");
             sr.Close();
 
         }
