@@ -77,6 +77,7 @@ namespace GoogleARCore.Examples.Common
         /// The mesh.
         /// </summary>
         private Mesh m_Mesh;
+        private Mesh m_SaveMesh;
 
         /// <summary>
         /// The mesh renderer.
@@ -139,7 +140,16 @@ namespace GoogleARCore.Examples.Common
                 m_Mesh = new Mesh();
             }
 
+
             m_Mesh.Clear();
+
+            m_SaveMesh = GetComponent<MeshFilter>().mesh;
+            if (m_SaveMesh == null)
+            {
+                m_SaveMesh = new Mesh();
+            }
+
+            m_SaveMesh.Clear();
 
             m_CachedColor = PointColor;
 
@@ -197,7 +207,7 @@ namespace GoogleARCore.Examples.Common
             _AddAllPointsToCache();
             _AddAllPointsToSave();
             _UpdateMesh();
-            ExportPoints();
+            ExportMeshPoints();
         }
 
         /// <summary>
@@ -236,6 +246,25 @@ namespace GoogleARCore.Examples.Common
             sr.Close();
         }
 
+        public void ExportMeshPoints()
+        {
+            string path = Application.persistentDataPath + @"/Points.txt";
+            StreamWriter sr = new StreamWriter(path);
+            m_SaveMesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
+            var pts = m_SavedPoints.Select(p => p.Position).ToArray();
+            foreach (Vector3 m_vec in pts) {
+                string m_Print = m_vec.x + "," + m_vec.y + "," + m_vec.z;
+                sr.WriteLine(m_Print);
+            }
+
+
+
+            //var pts = m_SaveMesh.vertices;
+            //string pPrint = m_SavedPoints.Select(p => p.Position).ToString();
+            // string Pprint = m_SaveMesh.vertices.ToString();
+            sr.Close();
+
+        }
 
         public void ExportPoints()
         {
@@ -264,15 +293,15 @@ namespace GoogleARCore.Examples.Common
                     Vector3 pos = Frame.Pose.position;
                     Quaternion rot = Frame.Pose.rotation;
 
-                    //curPose = Frame.Pose;
-                    //poseTransform = curPose.GetTransformedBy(initPose);
+                    curPose = Frame.Pose;
+                    poseTransform = curPose.GetTransformedBy(initPose);
                     //transform.SetPositionAndRotation(poseTransform.position, poseTransform.rotation);
-                    //Vector3 newPoint = transform.TransformPoint(point);
+                    Vector3 newPoint = transform.TransformPoint(point);
 
                     //Vector3 newpoint = point, poseTransform.rotation);
                     //Vector3 curPost = Frame.Pose.position;
-                    // string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
-                    string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
+                    string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
+                    //string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
                     sr.WriteLine(content);
                     m_Track += 1;
 
@@ -467,10 +496,10 @@ namespace GoogleARCore.Examples.Common
 
         private void _UpdateSavedMesh()
         {
-            m_Mesh.Clear();
-            m_Mesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
-            m_Mesh.uv = m_SavedPoints.Select(p => p.Size).ToArray();
-            m_Mesh.SetIndices(Enumerable.Range(0, m_SavedPoints.Count).ToArray(),
+            m_SaveMesh.Clear();
+            m_SaveMesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
+            m_SaveMesh.uv = m_SavedPoints.Select(p => p.Size).ToArray();
+            m_SaveMesh.SetIndices(Enumerable.Range(0, m_SavedPoints.Count).ToArray(),
                               MeshTopology.Points, 0);
         }
 
