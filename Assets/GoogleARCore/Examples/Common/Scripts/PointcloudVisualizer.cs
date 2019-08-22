@@ -37,6 +37,8 @@ namespace GoogleARCore.Examples.Common
         [Tooltip("The color of the feature points.")]
         public Color PointColor;
 
+
+
         /// <summary>
         /// Whether to enable the pop animation for the feature points.
         /// </summary>
@@ -205,7 +207,7 @@ namespace GoogleARCore.Examples.Common
             }
 
             _AddAllPointsToCache();
-            _AddAllPointsToSave();
+            //_AddAllPointsToSave();
             _UpdateMesh();
             ExportMeshPoints();
         }
@@ -224,9 +226,6 @@ namespace GoogleARCore.Examples.Common
            // Path of file
         string path = Application.persistentDataPath + @"/Points.txt";
 
-        //Vector2 ExportpSave;
-        //ExportpSave = m_SavedPoints.Select(p => p.Size).ToArray();
-
         // Create Writing Object
         StreamWriter sr = new StreamWriter(path);
           
@@ -234,7 +233,6 @@ namespace GoogleARCore.Examples.Common
             if (!File.Exists(path)) {
                 Debug.Log(path + " doesn't exist... Creating...");
                 sr = File.CreateText(path);
-                //StreamWriter sr = System.IO.File.CreateText(path);
                 sr.WriteLine("Points \n");
                     }
             else
@@ -246,6 +244,8 @@ namespace GoogleARCore.Examples.Common
             sr.Close();
         }
 
+        
+
         public void ExportMeshPoints()
         {
             m_Frames++;
@@ -253,14 +253,13 @@ namespace GoogleARCore.Examples.Common
             StreamWriter sr = new StreamWriter(path);
             int count = 1;
             //m_SaveMesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
-            var pts = m_SavedPoints.Select(p => p.Position).ToArray();
+            var pts = m_CachedPoints.Select(p => p.Position).ToArray();
             foreach (Vector3 m_vec in pts) {
                 string m_Print = m_vec.x + "," + m_vec.y + "," + m_vec.z;
                 sr.WriteLine(m_Print);
                 count++;
             }
-            Debug.Log("Frame: " + m_Frames + " Wrote: " + count + " Points \n");
-            //Debug.Log("Wrote: " + count + "Points");
+          //  Debug.Log("Frame: " + m_Frames + " Wrote: " + count + " Points \n"); 
             sr.Close();
 
         }
@@ -270,19 +269,6 @@ namespace GoogleARCore.Examples.Common
             //// Path of file
             string path = Application.persistentDataPath + @"/Points.txt";
             StreamWriter sr = new StreamWriter(path, append: true);
-            //Run on First output
-//            if (m_init == 0)
-//            {
-//                Quaternion rot = Frame.Pose.rotation;
-//                string content = Frame.Pose.position.x + "," + Frame.Pose.position.y + "," + Frame.Pose.position.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
-//                sr.WriteLine(content);
-//                m_init = 1;
-//            }
-            // Vector3 ExportpSave = m_SavedPoints.Select(p => p.Position).ToArray();
-            //var ExportpSave = m_SavedPoints.Select(p => p.Position);
-            //sr.WriteLine(ExportpSave);
-
-            //Debug.Log("ExportpSave" + ExportpSave + "\n");
             // Content of the file
             if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
             {
@@ -303,14 +289,8 @@ namespace GoogleARCore.Examples.Common
                     //string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
                     sr.WriteLine(content);
                     m_Track += 1;
-
-                    //   string tracker = i + "\n";
-                    //   Debug.Log(tracker);
                 }
             }
-            //m_Frames += 1;
-           // string tracker = "Frame:" + m_Frames + "\n";
-            //sr.WriteLine(tracker);
             sr.Close();
             }
         
