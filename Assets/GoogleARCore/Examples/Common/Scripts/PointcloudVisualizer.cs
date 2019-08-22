@@ -256,7 +256,8 @@ namespace GoogleARCore.Examples.Common
             var pts = m_CachedPoints.Select(p => p.Position).ToArray();
             foreach (Vector3 m_vec in pts) {
                 string m_Print = m_vec.x + "," + m_vec.y + "," + m_vec.z;
-                sr.WriteLine(m_Print);
+                //sr.WriteLine(m_Print);
+                HelloAR.Connection.Write(m_vec);
                 count++;
             }
           //  Debug.Log("Frame: " + m_Frames + " Wrote: " + count + " Points \n"); 
