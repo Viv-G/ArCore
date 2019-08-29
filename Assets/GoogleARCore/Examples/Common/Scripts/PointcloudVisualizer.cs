@@ -61,7 +61,7 @@ namespace GoogleARCore.Examples.Common
         /// The maximum number of points to show on the screen.
         /// </summary>
         [Tooltip("The maximum number of points to show on the screen.")]
-        [SerializeField] private int m_MaxPointCount = 1000000;
+        [SerializeField] private int m_MaxPointCount = 1000;
 
         /// <summary>
         /// The default size of the points.
@@ -167,10 +167,7 @@ namespace GoogleARCore.Examples.Common
             m_CachedPoints = new LinkedList<PointInfo>();
             m_SavedPoints = new LinkedList<PointInfo>();
             initPose = Frame.Pose;
-            ExportSetUp();
-
-            
-
+            //ExportSetUp();
 
         }
 
@@ -209,7 +206,8 @@ namespace GoogleARCore.Examples.Common
             _AddAllPointsToCache();
             //_AddAllPointsToSave();
             _UpdateMesh();
-            ExportMeshPoints();
+            //ExportMeshPoints();
+            ExportPoints();
         }
 
         /// <summary>
@@ -241,61 +239,60 @@ namespace GoogleARCore.Examples.Common
                 sr = File.CreateText(path);
                 sr.WriteLine("Points: \n");
             }
-            sr.Close();
+        sr.Close();
         }
 
         
 
-        public void ExportMeshPoints()
-        {
-            m_Frames++;
-            string path = Application.persistentDataPath + @"/Points.txt";
-            StreamWriter sr = new StreamWriter(path);
-            int count = 1;
-            //m_SaveMesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
-            var pts = m_CachedPoints.Select(p => p.Position).ToArray();
-            foreach (Vector3 m_vec in pts) {
-                string m_Print = m_vec.x + "," + m_vec.y + "," + m_vec.z;
-                //sr.WriteLine(m_Print);
-                HelloAR.Connection.Write(m_vec);
-                count++;
-            }
-          //  Debug.Log("Frame: " + m_Frames + " Wrote: " + count + " Points \n"); 
-            sr.Close();
+        //public void ExportMeshPoints()
+        //{
+        //    m_Frames++;
+        //    string path = Application.persistentDataPath + @"/PointsCache.txt";
+        //    StreamWriter sr1 = new StreamWriter(path);
+        //    int count = 1;
+        //    //m_SaveMesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
+        //    var pts = m_CachedPoints.Select(p => p.Position).ToArray();
+        //    foreach (Vector3 m_vec in pts) {
+        //        string m_Print = m_vec.x + " " + m_vec.y + " " + m_vec.z;
+        //        sr1.WriteLine(m_Print);
+        //        //HelloAR.Connection.Write(m_vec);
+        //        count++;
+        //    }
+        //  //  Debug.Log("Frame: " + m_Frames + " Wrote: " + count + " Points \n"); 
+        //    sr1.Close();
 
-        }
+        //}
 
         public void ExportPoints()
         {
             //// Path of file
             string path = Application.persistentDataPath + @"/Points.txt";
             StreamWriter sr = new StreamWriter(path, append: true);
+			string buff = null;
             // Content of the file
             if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
             {
                 for (int i = 0; i < Frame.PointCloud.PointCount; i++)
                 {
                     Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
-                    Vector3 pos = Frame.Pose.position;
-                    Quaternion rot = Frame.Pose.rotation;
+                    string content = point.x + " " + point.y + " " + point.z + "\n";
+					buff = buff + content;
+                    //Vector3 pos = Frame.Pose.position;
+                    //Quaternion rot = Frame.Pose.rotation;
 
-                    curPose = Frame.Pose;
-                    poseTransform = curPose.GetTransformedBy(initPose);
-                    //transform.SetPositionAndRotation(poseTransform.position, poseTransform.rotation);
-                    Vector3 newPoint = transform.TransformPoint(point);
-
+                    //curPose = Frame.Pose;
+                    //poseTransform = curPose.GetTransformedBy(initPose);
+                    //Vector3 newPoint = transform.TransformPoint(point);
                     //Vector3 newpoint = point, poseTransform.rotation);
                     //Vector3 curPost = Frame.Pose.position;
-                    string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
+                    //string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
                     //string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
-                    sr.WriteLine(content);
+                    sr.WriteLine(buff);
                     m_Track += 1;
                 }
             }
             sr.Close();
             }
-        
-        
 
         private void _ClearSavedPoints()
         {

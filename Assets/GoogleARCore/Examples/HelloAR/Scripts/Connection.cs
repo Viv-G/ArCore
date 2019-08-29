@@ -15,8 +15,9 @@
     {
         private static int port = 9999;
         //string HostIP = "172.20.10.2";
-        private static string Host = "172.20.10.2";
-        private static IPAddress HostIP = IPAddress.Parse(Host);
+        //private static string Host = "172.20.10.2"; //HOTSPOT
+		private static string Host = "192.168.8.100"; //HOME
+		private static IPAddress HostIP = IPAddress.Parse(Host);
         byte[] bytes = new byte[1024];
         // IPEndPoint hostEndPoint;
         // hostEndPoint = new IPEndPoint(HostIP, port);
@@ -37,13 +38,13 @@
         public static void Write(Vector3 wPoint)
         {
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            Debug.Log("Establishing Connection to " + Host);
+            //Debug.Log("Establishing Connection to " + Host);
             s.Connect(HostIP, port);
-            Debug.Log("Connection established \n Writing... \n");
-            string sWrite = wPoint.x + "," + wPoint.y + "," + wPoint.z;
+           // Debug.Log("Connection established \n Writing... \n");
+            string sWrite = wPoint.x + " " + wPoint.y + " " + wPoint.z + "\n";
             byte[] sBytes = Encoding.ASCII.GetBytes(sWrite);
             s.Send(sBytes);
-            Debug.Log("Sent: " + sWrite);
+            //Debug.Log("Sent: " + sWrite);
             s.Close();
         }
         //// Start is called before the first frame update
