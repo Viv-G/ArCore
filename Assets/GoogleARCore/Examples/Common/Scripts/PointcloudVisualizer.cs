@@ -209,7 +209,7 @@ namespace GoogleARCore.Examples.Common
             _UpdateMesh();
             //ExportMeshPoints();
             ExportPoints();
-            IncrementSend();
+            //IncrementSend();
         }
 
         /// <summary>
@@ -272,14 +272,14 @@ namespace GoogleARCore.Examples.Common
             StreamWriter sr = new StreamWriter(path, append: true);
 			string buff = "";
             // Content of the file
-            m_Frames += 1;
-            sr.WriteLine("Frame: " + m_Frames + "Has " + Frame.PointCloud.PointCount + "Points");
+            //m_Frames += 1;
+            //sr.WriteLine("Frame: " + m_Frames + "Has " + Frame.PointCloud.PointCount + "Points");
             if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
             {
                 for (int i = 0; i < Frame.PointCloud.PointCount; i++)
                 {
                     Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
-                    string content =m_Track + " " + point.x + " " + point.y + " " + point.z + "\n";
+                    string content =point.x + " " + point.y + " " + point.z + "\n";
 					buff += content;
 					//Vector3 pos = Frame.Pose.position;
 					//Quaternion rot = Frame.Pose.rotation;
@@ -294,34 +294,35 @@ namespace GoogleARCore.Examples.Common
 					//HelloAR.Connection.WriteString(buff);
 					m_Track += 1;
                 }
-                sr.WriteLine(buff);
+                //sr.WriteLine(buff);
+                HelloAR.Connection.WriteString(Frame.PointCloud.PointCount, buff);
             }
             sr.Close();
             }
 
-        public static void IncrementSend()
-        {
-            //// Path of file
-            string path = Application.persistentDataPath + @"/PointsIncrement.txt";
-            StreamWriter sr1 = new StreamWriter(path, append: true);
-            string buff = "";
-            int pc = pCount;
-            // Content of the file
-            if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
-            {
-                for (int i = pc; i < Frame.PointCloud.PointCount; i++)
-                {
-                    Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
-                    string content = i + " " + point.x + " " + point.y + " " + point.z + "\n";
-                    buff += content;
-                    //HelloAR.Connection.WriteString(buff);
-                    //m_Track += 1;
-                    pCount++;
-                }
-                sr1.WriteLine(buff);
+        //public static void IncrementSend()
+        //{
+        //    //// Path of file
+        //    string path = Application.persistentDataPath + @"/PointsIncrement.txt";
+        //    StreamWriter sr1 = new StreamWriter(path, append: true);
+        //    string buff = "";
+        //    int pc = pCount;
+        //    // Content of the file
+        //    if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
+        //    {
+        //        for (int i = pc; i < Frame.PointCloud.PointCount; i++)
+        //        {
+        //            Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
+        //            string content = i + " " + point.x + " " + point.y + " " + point.z + "\n";
+        //            buff += content;
+        //            //HelloAR.Connection.WriteString(buff);
+        //            //m_Track += 1;
+        //            pCount++;
+        //        }
+        //        sr1.WriteLine(buff);
 
-            }
-        }
+        //    }
+        //}
 
         private void _ClearSavedPoints()
         {

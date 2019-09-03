@@ -14,7 +14,7 @@
 
     public class Connection : MonoBehaviour
 	{
-		private static int port = 9999;
+		private static int port = 11111;
 		//string HostIP = "172.20.10.2";
 		private static string Host = "172.20.10.2"; //HOTSPOT
 													//private static string Host = "192.168.8.100"; //HOME
@@ -50,21 +50,25 @@
 			s.Close();
 		}
 
-		public static void WriteString(string pointBuffer)
+		public static void WriteString(int NPoints, string pointBuffer)
 		{
 			Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			//Debug.Log("Establishing Connection to " + Host);
 			s.Connect(HostIP, port);
-			// Debug.Log("Connection established \n Writing... \n");
+            // Debug.Log("Connection established \n Writing... \n");
+            string numPoints = NPoints.ToString();
+            string buffSend = "START\n" + numPoints + "\nPOINTS\n" + pointBuffer + "\nEND";
+            //byte[] nSend = NPoints.toBytes;
 
-			byte[] sBytes = Encoding.ASCII.GetBytes(pointBuffer);
-			//int size = sBytes.Length;
-			//string sizeSend = size.ToString();
-			//byte[] sSendByte = Encoding.ASCII.GetBytes(sizeSend);
+            byte[] sBytes = Encoding.ASCII.GetBytes(buffSend);
+            //int size = sBytes.Length;
+            //string sizeSend = size.ToString();
+            //byte[] sSendByte = Encoding.ASCII.GetBytes(sizeSend);
 
-			//s.Send(sSendByte);
+            //s.Send(sSendByte);
+            //s.Send(nSend);
 			s.Send(sBytes);
-			Debug.Log("Sent: " + sBytes);
+			//Debug.Log("Sent: " + sBytes);
 			s.Close();
 		}
 
