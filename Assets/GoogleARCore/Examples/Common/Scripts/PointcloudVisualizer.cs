@@ -67,7 +67,7 @@ namespace GoogleARCore.Examples.Common
         /// The default size of the points.
         /// </summary>
         [Tooltip("The default size of the points.")]
-        [SerializeField] private int m_DefaultSize = 10;
+        [SerializeField] private int m_DefaultSize = 2;
 
         /// <summary>
         /// The maximum size that the points will have when they pop.
@@ -124,6 +124,7 @@ namespace GoogleARCore.Examples.Common
 
         private int m_Track;
         private int m_Frames;
+        private static int pCount;
         private Vector3 m_prevARPosePosition;
         public Pose initPose;
         public Pose curPose;
@@ -208,6 +209,7 @@ namespace GoogleARCore.Examples.Common
             _UpdateMesh();
             //ExportMeshPoints();
             ExportPoints();
+            IncrementSend();
         }
 
         /// <summary>
@@ -268,31 +270,58 @@ namespace GoogleARCore.Examples.Common
             //// Path of file
             string path = Application.persistentDataPath + @"/Points.txt";
             StreamWriter sr = new StreamWriter(path, append: true);
-			string buff = null;
+			string buff = "";
             // Content of the file
+            m_Frames += 1;
+            sr.WriteLine("Frame: " + m_Frames + "Has " + Frame.PointCloud.PointCount + "Points");
             if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
             {
                 for (int i = 0; i < Frame.PointCloud.PointCount; i++)
                 {
                     Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
-                    string content = point.x + " " + point.y + " " + point.z + "\n";
-					buff = buff + content;
-                    //Vector3 pos = Frame.Pose.position;
-                    //Quaternion rot = Frame.Pose.rotation;
+                    string content =m_Track + " " + point.x + " " + point.y + " " + point.z + "\n";
+					buff += content;
+					//Vector3 pos = Frame.Pose.position;
+					//Quaternion rot = Frame.Pose.rotation;
 
-                    //curPose = Frame.Pose;
-                    //poseTransform = curPose.GetTransformedBy(initPose);
-                    //Vector3 newPoint = transform.TransformPoint(point);
-                    //Vector3 newpoint = point, poseTransform.rotation);
-                    //Vector3 curPost = Frame.Pose.position;
-                    //string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
-                    //string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
-                    sr.WriteLine(buff);
-                    m_Track += 1;
+					//curPose = Frame.Pose;
+					//poseTransform = curPose.GetTransformedBy(initPose);
+					//Vector3 newPoint = transform.TransformPoint(point);
+					//Vector3 newpoint = point, poseTransform.rotation);
+					//Vector3 curPost = Frame.Pose.position;
+					//string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
+					//string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
+					//HelloAR.Connection.WriteString(buff);
+					m_Track += 1;
                 }
+                sr.WriteLine(buff);
             }
             sr.Close();
             }
+
+        public static void IncrementSend()
+        {
+            //// Path of file
+            string path = Application.persistentDataPath + @"/PointsIncrement.txt";
+            StreamWriter sr1 = new StreamWriter(path, append: true);
+            string buff = "";
+            int pc = pCount;
+            // Content of the file
+            if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
+            {
+                for (int i = pc; i < Frame.PointCloud.PointCount; i++)
+                {
+                    Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
+                    string content = i + " " + point.x + " " + point.y + " " + point.z + "\n";
+                    buff += content;
+                    //HelloAR.Connection.WriteString(buff);
+                    //m_Track += 1;
+                    pCount++;
+                }
+                sr1.WriteLine(buff);
+
+            }
+        }
 
         private void _ClearSavedPoints()
         {
@@ -337,12 +366,10 @@ namespace GoogleARCore.Examples.Common
                 {
                     Vector3 point = Frame.PointCloud.GetPointAsStruct(
                         Random.Range(0, Frame.PointCloud.PointCount - 1));
-
                     _AddPointToCache(point);
                 }
             }
         }
-
         /// <summary>
         /// Adds points incrementally to the cache, by selecting points at random each frame.
         /// </summary>
