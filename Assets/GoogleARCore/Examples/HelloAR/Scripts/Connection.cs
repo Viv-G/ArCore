@@ -11,35 +11,37 @@
     /// <summary>
     /// Creates Connection...
     /// </summary>
+    ///
+
 
     public class Connection : MonoBehaviour
 	{
 		private static int port = 11111;
 		//string HostIP = "172.20.10.2";
 		private static string Host = "172.20.10.2"; //HOTSPOT
-													//private static string Host = "192.168.8.100"; //HOME
+		//private static string Host = "192.168.8.100"; //HOME
 		private static IPAddress HostIP = IPAddress.Parse(Host);
 		byte[] bytes = new byte[1024];
         public static int pCount;
 		// IPEndPoint hostEndPoint;
 		// hostEndPoint = new IPEndPoint(HostIP, port);
-		// Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+		static Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-		public void Connect()
+		public static void Connect()
 		{
-			Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			//Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			Debug.Log("Establishing Connection to " + Host);
 			s.Connect(HostIP, port);
-			Debug.Log("Connection established \n Recieving...");
-			s.Receive(bytes);
-			string Message = Encoding.ASCII.GetString(bytes);
-			Debug.Log("The time got from the server is " + Message);
+			Debug.Log("Connection established \n");
+			//s.Receive(bytes);
+			//string Message = Encoding.ASCII.GetString(bytes);
+			//Debug.Log("The time got from the server is " + Message);
 			s.Close();
 		}
 
 		public static void WriteFloats(Vector3 wPoint)
 		{
-			Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+			//Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			//Debug.Log("Establishing Connection to " + Host);
 			s.Connect(HostIP, port);
 			// Debug.Log("Connection established \n Writing... \n");
@@ -52,33 +54,40 @@
 
 		public static void WriteString(int NPoints, string pointBuffer)
 		{
-			Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            // Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            if (pCount == 0) {
+                s.Connect(HostIP, port);
+                pCount++;
+            }
+            
+			//Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			//Debug.Log("Establishing Connection to " + Host);
-			s.Connect(HostIP, port);
+			//s.Connect(HostIP, port);
             // Debug.Log("Connection established \n Writing... \n");
-            string numPoints = NPoints.ToString();
-            string buffSend = "START\n" + numPoints + "\nPOINTS\n" + pointBuffer + "\nEND";
-            //byte[] nSend = NPoints.toBytes;
-
+            // Convert to Strings
+            string numPoints = NPoints.ToString() + "END";
+            string buffSend = /*"START\n" + numPoints + "\nPOINTS\n" + */pointBuffer + "END";
+            // Convert to Bytes
+            byte[] nSend = Encoding.ASCII.GetBytes(numPoints);
             byte[] sBytes = Encoding.ASCII.GetBytes(buffSend);
             //int size = sBytes.Length;
             //string sizeSend = size.ToString();
             //byte[] sSendByte = Encoding.ASCII.GetBytes(sizeSend);
-
+            //SEND
             //s.Send(sSendByte);
-            //s.Send(nSend);
+            s.Send(nSend);
 			s.Send(sBytes);
 			//Debug.Log("Sent: " + sBytes);
-			s.Close();
+			//s.Close();
 		}
 
-        public static void IncrementSend()
+      /*  public static void IncrementSend()
         {
             //// Path of file
             string path = Application.persistentDataPath + @"/PointsIncrement.txt";
             StreamWriter sr1 = new StreamWriter(path, append: true);
             string buff = "";
-            int pc = pCount;
+            //int pc = pCount;
             // Content of the file
             if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
             {
@@ -94,7 +103,7 @@
                 sr1.WriteLine(buff);
 
             }
-        }
+        } */
 
             //// Start is called before the first frame update
             //void Start()

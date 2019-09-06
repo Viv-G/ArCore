@@ -23,6 +23,9 @@ namespace GoogleARCore.Examples.Common
     using System.Linq;
     using UnityEngine;
     using System.IO;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Text;
 
     /// <summary>
     /// Visualizes the feature points for spatial mapping, showing a pop animation when they appear.
@@ -31,6 +34,13 @@ namespace GoogleARCore.Examples.Common
     [RequireComponent(typeof(MeshRenderer))]
     public class PointcloudVisualizer : MonoBehaviour
     {
+     /*   private static int port = 11111;
+        //string HostIP = "172.20.10.2";
+        //private static string Host = "172.20.10.2"; //HOTSPOT
+        private static string Host = "192.168.8.100"; //HOME
+        private static IPAddress HostIP = IPAddress.Parse(Host);
+        //byte[] bytes = new byte[1024]; */
+
         /// <summary>
         /// The color of the feature points.
         /// </summary>
@@ -168,7 +178,10 @@ namespace GoogleARCore.Examples.Common
             m_CachedPoints = new LinkedList<PointInfo>();
             m_SavedPoints = new LinkedList<PointInfo>();
             initPose = Frame.Pose;
+//            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+//            s.Connect(HostIP, port);
             //ExportSetUp();
+            //HelloAR.Connection.Connect();
 
         }
 
@@ -268,36 +281,55 @@ namespace GoogleARCore.Examples.Common
         public void ExportPoints()
         {
             //// Path of file
-            string path = Application.persistentDataPath + @"/Points.txt";
-            StreamWriter sr = new StreamWriter(path, append: true);
+            //string path = Application.persistentDataPath + @"/Points.txt";
+           // StreamWriter sr = new StreamWriter(path, append: true);
 			string buff = "";
             // Content of the file
             //m_Frames += 1;
             //sr.WriteLine("Frame: " + m_Frames + "Has " + Frame.PointCloud.PointCount + "Points");
+            float minX = -0.9f;
+            float minY = -0.8f;
+            float minZ = 0.2f;
+
+            float maxX = 0.3f;
+            float maxY = 3.0f;
+            float maxZ = 3.3f;
+
+
+
             if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
             {
                 for (int i = 0; i < Frame.PointCloud.PointCount; i++)
                 {
                     Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
-                    string content =point.x + " " + point.y + " " + point.z + "\n";
-					buff += content;
-					//Vector3 pos = Frame.Pose.position;
-					//Quaternion rot = Frame.Pose.rotation;
+                    if (point.x < minX || point.y < minY || point.z < minZ ||
+                        point.x < maxX || point.y < maxY || point.z < maxZ)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        string content = point.x + " " + point.y + " " + point.z + "\n";
+                        buff += content;
+                        //Vector3 pos = Frame.Pose.position;
+                        //Quaternion rot = Frame.Pose.rotation;
 
-					//curPose = Frame.Pose;
-					//poseTransform = curPose.GetTransformedBy(initPose);
-					//Vector3 newPoint = transform.TransformPoint(point);
-					//Vector3 newpoint = point, poseTransform.rotation);
-					//Vector3 curPost = Frame.Pose.position;
-					//string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
-					//string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
-					//HelloAR.Connection.WriteString(buff);
-					m_Track += 1;
+                        //curPose = Frame.Pose;
+                        //poseTransform = curPose.GetTransformedBy(initPose);
+                        //Vector3 newPoint = transform.TransformPoint(point);
+                        //Vector3 newpoint = point, poseTransform.rotation);
+                        //Vector3 curPost = Frame.Pose.position;
+                        //string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
+                        //string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
+                        //HelloAR.Connection.WriteString(buff);
+                        m_Track += 1;
+                    }
                 }
                 //sr.WriteLine(buff);
                 HelloAR.Connection.WriteString(Frame.PointCloud.PointCount, buff);
+              
             }
-            sr.Close();
+            //sr.Close();
             }
 
         //public static void IncrementSend()
