@@ -18,25 +18,26 @@
 	{
 		private static int port = 11111;
 		//string HostIP = "172.20.10.2";
-		private static string Host = "172.20.10.2"; //HOTSPOT
-		//private static string Host = "192.168.8.100"; //HOME
-		private static IPAddress HostIP = IPAddress.Parse(Host);
-		byte[] bytes = new byte[1024];
+		//private static string Host = "172.20.10.2"; //HOTSPOT
+        private static string HostIP = EntryScript.HostSet;
+                                                    //private static string Host = "192.168.8.100"; //HOME
+                                                    //private static IPAddress HostIP = IPAddress.Parse(Host);
         public static int pCount;
 		// IPEndPoint hostEndPoint;
 		// hostEndPoint = new IPEndPoint(HostIP, port);
-		static Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+		public static Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-		public static void Connect()
+
+		public static void Connect(string Host)
 		{
 			//Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 			Debug.Log("Establishing Connection to " + Host);
-			s.Connect(HostIP, port);
+            //IPAddress HostIP = IPAddress.Parse(Host);
+            s.Connect(HostIP, port);
 			Debug.Log("Connection established \n");
 			//s.Receive(bytes);
 			//string Message = Encoding.ASCII.GetString(bytes);
 			//Debug.Log("The time got from the server is " + Message);
-			s.Close();
 		}
 
 		public static void WriteFloats(Vector3 wPoint)

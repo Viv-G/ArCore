@@ -139,7 +139,10 @@ namespace GoogleARCore.Examples.Common
         public Pose initPose;
         public Pose curPose;
         public Pose poseTransform;
-//        private int m_init;
+
+        private Vector3 minVals = new Vector3(-0.9f, -1.7f, 0.2f);
+        private Vector3 maxVals = new Vector3(1f, 0.2f, 3f);
+        //        private int m_init;
 
         /// <summary>
         /// The Unity Start() method.
@@ -287,14 +290,6 @@ namespace GoogleARCore.Examples.Common
             // Content of the file
             //m_Frames += 1;
             //sr.WriteLine("Frame: " + m_Frames + "Has " + Frame.PointCloud.PointCount + "Points");
-            float minX = -0.9f;
-            float minY = -0.8f;
-            float minZ = 0.2f;
-
-            float maxX = 0.3f;
-            float maxY = 3.0f;
-            float maxZ = 3.3f;
-
 
 
             if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
@@ -302,8 +297,9 @@ namespace GoogleARCore.Examples.Common
                 for (int i = 0; i < Frame.PointCloud.PointCount; i++)
                 {
                     Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
-                    if (point.x < minX || point.y < minY || point.z < minZ ||
-                        point.x < maxX || point.y < maxY || point.z < maxZ)
+
+                    if (point.x < minVals.x || point.y < minVals.y || point.z < minVals.z ||
+                        point.x > maxVals.x || point.y > maxVals.y || point.z > maxVals.z)
                     {
                         continue;
                     }

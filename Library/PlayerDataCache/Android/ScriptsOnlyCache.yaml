@@ -1,6 +1,7 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - EntryScript
     - GoogleARCore.ARCoreBackgroundRenderer
     - GoogleARCore.ARCoreSession
     - GoogleARCore.ARCoreSessionConfig
@@ -10,7 +11,6 @@ ScriptsOnlyBuild:
     - GoogleARCore.Examples.HelloAR.HelloARController
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
-    - UnityEditor.TestTools.TestRunner.TestListCacheData
     UnityEngine.SpatialTracking.dll:
     - UnityEngine.SpatialTracking.TrackedPoseDriver
     UnityEngine.UI.dll:
@@ -20,8 +20,60 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
     - UnityEngine.UI.Text
   sceneClasses:
+    Assets/GoogleARCore/Examples/HelloAR/Scenes/Entry.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 9724}
+    - Class: 114
+      Script: {instanceID: 10052}
+    - Class: 114
+      Script: {instanceID: 10134}
+    - Class: 114
+      Script: {instanceID: 10824}
+    - Class: 114
+      Script: {instanceID: 11168}
+    - Class: 114
+      Script: {instanceID: 11550}
+    - Class: 114
+      Script: {instanceID: 11848}
+    - Class: 114
+      Script: {instanceID: 12322}
+    - Class: 114
+      Script: {instanceID: 12986}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
     Assets/GoogleARCore/Examples/HelloAR/Scenes/HelloAR.unity:
     - Class: 1
       Script: {instanceID: 0}
@@ -50,10 +102,6 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9724}
     - Class: 114
-      Script: {instanceID: 10052}
-    - Class: 114
-      Script: {instanceID: 10134}
-    - Class: 114
       Script: {instanceID: 10694}
     - Class: 114
       Script: {instanceID: 10710}
@@ -64,28 +112,20 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11102}
     - Class: 114
-      Script: {instanceID: 11366}
+      Script: {instanceID: 11368}
     - Class: 114
-      Script: {instanceID: 11548}
+      Script: {instanceID: 11926}
     - Class: 114
-      Script: {instanceID: 11924}
+      Script: {instanceID: 12028}
     - Class: 114
-      Script: {instanceID: 12026}
+      Script: {instanceID: 12322}
     - Class: 114
-      Script: {instanceID: 12320}
+      Script: {instanceID: 12748}
     - Class: 114
-      Script: {instanceID: 12746}
-    - Class: 114
-      Script: {instanceID: 12984}
+      Script: {instanceID: 12986}
     - Class: 115
       Script: {instanceID: 0}
-    - Class: 128
-      Script: {instanceID: 0}
     - Class: 157
-      Script: {instanceID: 0}
-    - Class: 213
-      Script: {instanceID: 0}
-    - Class: 222
       Script: {instanceID: 0}
     - Class: 223
       Script: {instanceID: 0}
@@ -382,6 +422,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: GoogleARCore
     className: ARCoreBackgroundRenderer
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EntryScript
   - hash:
       serializedVersion: 2
       Hash: b3ab2106268377ffe25dd18ac23dca28
@@ -738,5 +784,6 @@ ScriptsOnlyBuild:
     className: PlayableTrack
   platform: 13
   scenePathNames:
+  - Assets/GoogleARCore/Examples/HelloAR/Scenes/Entry.unity
   - Assets/GoogleARCore/Examples/HelloAR/Scenes/HelloAR.unity
   playerPath: /Users/Viv/Unity/ArCore/app5.apk

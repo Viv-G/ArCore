@@ -115,6 +115,7 @@ namespace GoogleARCore.Examples.HelloAR
         /// </summary>
         private void _DoQuit()
         {
+            Connection.s.Close();
             Application.Quit();
         }
 
