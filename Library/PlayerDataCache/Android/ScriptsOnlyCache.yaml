@@ -1,13 +1,13 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
-    - EntryScript
     - GoogleARCore.ARCoreBackgroundRenderer
     - GoogleARCore.ARCoreSession
     - GoogleARCore.ARCoreSessionConfig
     - GoogleARCore.EnvironmentalLight
     - GoogleARCore.Examples.Common.PointcloudVisualizer
     - GoogleARCore.Examples.HelloAR.Connection
+    - GoogleARCore.Examples.HelloAR.EntryScript
     - GoogleARCore.Examples.HelloAR.HelloARController
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -427,9 +427,9 @@ ScriptsOnlyBuild:
     className: ARCoreBackgroundRenderer
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: f6ce517cfe441140f4658698ab4831e5
     assemblyName: Assembly-CSharp.dll
-    namespaceName: 
+    namespaceName: GoogleARCore.Examples.HelloAR
     className: EntryScript
   - hash:
       serializedVersion: 2

@@ -1,95 +1,147 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-
-public class EntryScript : MonoBehaviour
+﻿namespace GoogleARCore.Examples.HelloAR
 {
-    public static string HostSet = "172.20.10.2";
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
+    using UnityEngine.UI;
+    using UnityEngine.SceneManagement;
+    using System.Net;
+    using System.Net.Sockets;
+    using System.Text;
+    using System;
 
-    public void SetIP(string HostField)
+    public class EntryScript : MonoBehaviour
     {
-        Debug.Log("Set IP \n");
-        HostSet = HostField;
-    }
-
-    public void LoadScene()
-    {
-        SceneManager.LoadScene("HelloAR");
-
-    }
-
-    /// <summary>
-    /// True if the app is in the process of quitting due to an ARCore connection error,
-    /// otherwise false.
-    /// </summary>
-    private bool m_IsQuitting = false;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
+        public static string HostSet = "172.20.10.2";
+        public Text Text_Status;
         
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        _UpdateApplicationLifecycle();
-
-        // If the player has not touched the screen, we are done with this update.
-        Touch touch;
-        if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
+        public void SetIP(string HostField)
         {
-            return;
+            Debug.Log("Set IP \n");
+            HostSet = HostField;
+         //   Connection.Connect(HostSet);
         }
 
-    }
-    private void _UpdateApplicationLifecycle()
-    {
-        // Exit the app when the 'back' button is pressed.
-        if (Input.GetKey(KeyCode.Escape))
+        public void LoadScene()
+        {
+            Connection.Connect(HostSet);
+
+            if (Connection.s == null)
+            {
+                Text_Status.text = "Unable To Connect... Try again";
+                return;
+            }
+            else
+            {
+                Text_Status.text = "Connected To: " + HostSet;
+                SceneManager.LoadScene("HelloAR");
+            }
+        }
+
+        public void LoadHome()
+        {
+            Debug.Log("Set IP \n");
+            HostSet = "192.168.8.100";
+            Connection.Connect(HostSet);
+            if (Connection.s == null)
+            {
+                Text_Status.text = "Unable To Connect... Try again";
+                return;
+            }
+            else
+            {
+                Text_Status.text = "Connected To: " + HostSet;
+                SceneManager.LoadScene("HelloAR");
+            }
+        }
+
+        public void LoadHotSpot()
+        {
+            Debug.Log("Set IP \n");
+            HostSet = "172.20.10.2";
+            Connection.Connect(HostSet);
+            if (Connection.s == null)
+            {
+                Text_Status.text = "Unable To Connect... Try again";
+                return;
+            }
+            else
+            {
+                Text_Status.text = "Connected To: " + HostSet;
+                SceneManager.LoadScene("HelloAR");
+            }
+        }
+
+
+        /// <summary>
+        /// True if the app is in the process of quitting due to an ARCore connection error,
+        /// otherwise false.
+        /// </summary>
+        private bool m_IsQuitting = false;
+
+
+        // Start is called before the first frame update
+        void Start()
+        {
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            _UpdateApplicationLifecycle();
+
+            // If the player has not touched the screen, we are done with this update.
+            Touch touch;
+            if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
+            {
+                return;
+            }
+
+        }
+        private void _UpdateApplicationLifecycle()
+        {
+            // Exit the app when the 'back' button is pressed.
+            if (Input.GetKey(KeyCode.Escape))
+            {
+                Application.Quit();
+            }
+
+
+            if (m_IsQuitting)
+            {
+                return;
+            }
+        }
+
+
+
+        /// <summary>
+        /// Actually quit the application.
+        /// </summary>
+        private void _DoQuit()
         {
             Application.Quit();
         }
 
-
-        if (m_IsQuitting)
+        private void _ShowAndroidToastMessage(string message)
         {
-            return;
-        }
-    }
+            AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+            AndroidJavaObject unityActivity =
+                unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
 
-
-
-    /// <summary>
-    /// Actually quit the application.
-    /// </summary>
-    private void _DoQuit()
-    {
-        Application.Quit();
-    }
-
-    private void _ShowAndroidToastMessage(string message)
-    {
-        AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        AndroidJavaObject unityActivity =
-            unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-
-        if (unityActivity != null)
-        {
-            AndroidJavaClass toastClass = new AndroidJavaClass("android.widget.Toast");
-            unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+            if (unityActivity != null)
             {
-                AndroidJavaObject toastObject =
-                    toastClass.CallStatic<AndroidJavaObject>(
-                        "makeText", unityActivity, message, 0);
-                toastObject.Call("show");
-            }));
+                AndroidJavaClass toastClass = new AndroidJavaClass("android.widget.Toast");
+                unityActivity.Call("runOnUiThread", new AndroidJavaRunnable(() =>
+                {
+                    AndroidJavaObject toastObject =
+                        toastClass.CallStatic<AndroidJavaObject>(
+                            "makeText", unityActivity, message, 0);
+                    toastObject.Call("show");
+                }));
+            }
         }
-    }
 
+    }
 }
