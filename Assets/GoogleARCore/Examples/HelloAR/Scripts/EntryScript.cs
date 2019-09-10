@@ -10,11 +10,10 @@ public class EntryScript : MonoBehaviour
 {
     public static string HostSet = "172.20.10.2";
 
-    public static void SetIP(string HostField)
+    public void SetIP(string HostField)
     {
         Debug.Log("Set IP \n");
         HostSet = HostField;
-
     }
 
     public void LoadScene()

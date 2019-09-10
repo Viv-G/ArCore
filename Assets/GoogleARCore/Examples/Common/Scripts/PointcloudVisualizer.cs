@@ -287,6 +287,7 @@ namespace GoogleARCore.Examples.Common
             //string path = Application.persistentDataPath + @"/Points.txt";
            // StreamWriter sr = new StreamWriter(path, append: true);
 			string buff = "";
+            m_Track = 0;
             // Content of the file
             //m_Frames += 1;
             //sr.WriteLine("Frame: " + m_Frames + "Has " + Frame.PointCloud.PointCount + "Points");
@@ -305,7 +306,7 @@ namespace GoogleARCore.Examples.Common
                     }
                     else
                     {
-                        string content = point.x + " " + point.y + " " + point.z + "\n";
+                        string content = point.x + " " + point.y + " " + point.z;
                         buff += content;
                         //Vector3 pos = Frame.Pose.position;
                         //Quaternion rot = Frame.Pose.rotation;
@@ -322,8 +323,10 @@ namespace GoogleARCore.Examples.Common
                     }
                 }
                 //sr.WriteLine(buff);
-                HelloAR.Connection.WriteString(Frame.PointCloud.PointCount, buff);
-              
+                //HelloAR.Connection.WriteString(Frame.PointCloud.PointCount, buff);
+                HelloAR.Connection.WriteString(m_Track, buff);
+
+
             }
             //sr.Close();
             }

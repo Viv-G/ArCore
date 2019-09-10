@@ -66,8 +66,8 @@
 			//s.Connect(HostIP, port);
             // Debug.Log("Connection established \n Writing... \n");
             // Convert to Strings
-            string numPoints = NPoints.ToString() + "END";
-            string buffSend = /*"START\n" + numPoints + "\nPOINTS\n" + */pointBuffer + "END";
+            string numPoints = NPoints.ToString() + " ENDN\n";
+            string buffSend = /*"START\n" + numPoints + "\nPOINTS\n" + */pointBuffer + " ENDP\n";
             // Convert to Bytes
             byte[] nSend = Encoding.ASCII.GetBytes(numPoints);
             byte[] sBytes = Encoding.ASCII.GetBytes(buffSend);
