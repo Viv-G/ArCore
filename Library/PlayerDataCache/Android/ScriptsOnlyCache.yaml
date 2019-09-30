@@ -6,8 +6,10 @@ ScriptsOnlyBuild:
     - GoogleARCore.ARCoreSessionConfig
     - GoogleARCore.EnvironmentalLight
     - GoogleARCore.Examples.Common.PointcloudVisualizer
+    - GoogleARCore.Examples.Common.TextUpdate
+    - GoogleARCore.Examples.EntryScript
+    - GoogleARCore.Examples.HelloAR.BoxController
     - GoogleARCore.Examples.HelloAR.Connection
-    - GoogleARCore.Examples.HelloAR.EntryScript
     - GoogleARCore.Examples.HelloAR.HelloARController
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -23,8 +25,6 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Image
     - UnityEngine.UI.InputField
     - UnityEngine.UI.Text
-    com.unity.multiplayer-hlapi.Runtime.dll:
-    - UnityEngine.Networking.NetworkCallbacks
   sceneClasses:
     Assets/GoogleARCore/Examples/HelloAR/Scenes/Entry.unity:
     - Class: 1
@@ -35,7 +35,11 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 21
       Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
     - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
@@ -54,15 +58,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10824}
     - Class: 114
-      Script: {instanceID: 11168}
+      Script: {instanceID: 11170}
     - Class: 114
-      Script: {instanceID: 11550}
+      Script: {instanceID: 11370}
     - Class: 114
-      Script: {instanceID: 11848}
+      Script: {instanceID: 11552}
     - Class: 114
-      Script: {instanceID: 12322}
+      Script: {instanceID: 11850}
     - Class: 114
-      Script: {instanceID: 12986}
+      Script: {instanceID: 12324}
+    - Class: 114
+      Script: {instanceID: 12990}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -105,6 +111,8 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 9724}
     - Class: 114
+      Script: {instanceID: 10052}
+    - Class: 114
       Script: {instanceID: 10694}
     - Class: 114
       Script: {instanceID: 10710}
@@ -113,22 +121,30 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 10868}
     - Class: 114
-      Script: {instanceID: 11102}
+      Script: {instanceID: 11028}
     - Class: 114
-      Script: {instanceID: 11368}
+      Script: {instanceID: 11104}
     - Class: 114
-      Script: {instanceID: 11926}
+      Script: {instanceID: 11370}
     - Class: 114
-      Script: {instanceID: 12028}
+      Script: {instanceID: 11928}
     - Class: 114
-      Script: {instanceID: 12322}
+      Script: {instanceID: 12030}
     - Class: 114
-      Script: {instanceID: 12748}
+      Script: {instanceID: 12324}
     - Class: 114
-      Script: {instanceID: 12986}
+      Script: {instanceID: 12752}
+    - Class: 114
+      Script: {instanceID: 12990}
+    - Class: 114
+      Script: {instanceID: 13038}
     - Class: 115
       Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 222
       Script: {instanceID: 0}
     - Class: 223
       Script: {instanceID: 0}
@@ -415,6 +431,12 @@ ScriptsOnlyBuild:
     className: NetworkLobbyManager
   - hash:
       serializedVersion: 2
+      Hash: a2ab9640b0dfa728889d9a384755e020
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: GoogleARCore.Examples.Common
+    className: TextUpdate
+  - hash:
+      serializedVersion: 2
       Hash: 5887ef1bc706b22b773d253fd443ceef
     assemblyName: com.unity.multiplayer-hlapi.Runtime.dll
     namespaceName: UnityEngine.Networking
@@ -429,7 +451,7 @@ ScriptsOnlyBuild:
       serializedVersion: 2
       Hash: f6ce517cfe441140f4658698ab4831e5
     assemblyName: Assembly-CSharp.dll
-    namespaceName: GoogleARCore.Examples.HelloAR
+    namespaceName: GoogleARCore.Examples
     className: EntryScript
   - hash:
       serializedVersion: 2
@@ -469,7 +491,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 4c086acfe35221fd0e06bf674c5d1596
+      Hash: 30580484271ecf99e45f6a28e9196abd
     assemblyName: Assembly-CSharp.dll
     namespaceName: GoogleARCore.Examples.Common
     className: PointcloudVisualizer
@@ -667,6 +689,12 @@ ScriptsOnlyBuild:
     className: MarkerTrack
   - hash:
       serializedVersion: 2
+      Hash: 6634d7709199a8db083aac38273b4f61
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: GoogleARCore.Examples.Common
+    className: AnchorTrack
+  - hash:
+      serializedVersion: 2
       Hash: d791aa6007fa3640be1164ea75bb087d
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
@@ -767,6 +795,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: SignalEmitter
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: GoogleARCore.Examples.HelloAR
+    className: BoxController
   - hash:
       serializedVersion: 2
       Hash: 85c97bcc5f84eeb0999d75902803b99d

@@ -1,4 +1,4 @@
-﻿namespace GoogleARCore.Examples.HelloAR
+﻿namespace GoogleARCore.Examples
 {
     using System.Collections;
     using System.Collections.Generic;
@@ -14,7 +14,7 @@
     {
         public static string HostSet = "172.20.10.2";
         public Text Text_Status;
-        
+        private string content;
 
         public void SetIP(string HostField)
         {
@@ -25,16 +25,16 @@
 
         public void LoadScene()
         {
-            Connection.Connect(HostSet);
+            HelloAR.Connection.Connect(HostSet);
 
-            if (Connection.s == null)
+            if (HelloAR.Connection.s == null)
             {
-                Text_Status.text = "Unable To Connect... Try again";
+                content = "Unable To Connect... Try again";
                 return;
             }
             else
             {
-                Text_Status.text = "Connected To: " + HostSet;
+                content = "Connected To: " + HostSet;
                 SceneManager.LoadScene("HelloAR");
             }
         }
@@ -43,15 +43,15 @@
         {
             Debug.Log("Set IP \n");
             HostSet = "192.168.8.100";
-            Connection.Connect(HostSet);
-            if (Connection.s == null)
+            HelloAR.Connection.Connect(HostSet);
+            if (HelloAR.Connection.s == null)
             {
-                Text_Status.text = "Unable To Connect... Try again";
+                content = "Unable To Connect... Try again";
                 return;
             }
             else
             {
-                Text_Status.text = "Connected To: " + HostSet;
+                content = "Connected To: " + HostSet;
                 SceneManager.LoadScene("HelloAR");
             }
         }
@@ -60,17 +60,25 @@
         {
             Debug.Log("Set IP \n");
             HostSet = "172.20.10.2";
-            Connection.Connect(HostSet);
-            if (Connection.s == null)
+            HelloAR.Connection.Connect(HostSet);
+            if (HelloAR.Connection.s == null)
             {
-                Text_Status.text = "Unable To Connect... Try again";
+                content = "Unable To Connect... Try again";
                 return;
             }
             else
             {
-                Text_Status.text = "Connected To: " + HostSet;
+                content = "Connected To: " + HostSet;
                 SceneManager.LoadScene("HelloAR");
             }
+        }
+
+        public void SetConf(string c_val)
+        {
+            float cfloat_val = float.Parse(c_val);
+            Common.PointcloudVisualizer.setConf = cfloat_val;
+            content = "Set Confidence To: " + c_val;
+            
         }
 
 
@@ -89,6 +97,8 @@
         // Update is called once per frame
         void Update()
         {
+            Text_Status.text = content;
+
             _UpdateApplicationLifecycle();
 
             // If the player has not touched the screen, we are done with this update.
@@ -113,7 +123,6 @@
                 return;
             }
         }
-
 
 
         /// <summary>

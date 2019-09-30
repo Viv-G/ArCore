@@ -23,6 +23,7 @@ namespace GoogleARCore.Examples.Common
     using System.Linq;
     using UnityEngine;
     using System.IO;
+    using UnityEngine.UI;
     using System.Net;
     using System.Net.Sockets;
     using System.Text;
@@ -47,7 +48,27 @@ namespace GoogleARCore.Examples.Common
         [Tooltip("The color of the feature points.")]
         public Color PointColor;
 
-
+        /// vars for transform /////
+        ///
+        private Anchor anchor_new;
+        public Vector3 pointMin;
+        public Vector3 pointMax;
+        private int f_Track;
+        public Pose curPose = Pose.identity;
+        public Pose poseHome = Pose.identity;
+        private Quaternion rotHome = Quaternion.identity;
+        private Vector3 positionHome = Vector3.zero;
+        private Vector3 OffsetPos;
+        private Quaternion OffsetRot;
+        /*private static string pathT = Application.persistentDataPath + @"/PointsTrans.txt";
+        private static string path = Application.persistentDataPath + @"/Points.txt";
+        private StreamWriter sr1 = new StreamWriter(pathT, append: true);
+        private StreamWriter sr = new StreamWriter(path, append: true); */
+        //private int idPoint;
+        private static string pathT; //= Application.persistentDataPath + @"/PointsTrans.txt";
+        private static string path;// = Application.persistentDataPath + @"/Points.txt";
+        private StreamWriter srT; //= new StreamWriter(pathT, append: true);
+        private StreamWriter sr; //= new StreamWriter(path, append: true); 
 
         /// <summary>
         /// Whether to enable the pop animation for the feature points.
@@ -59,7 +80,7 @@ namespace GoogleARCore.Examples.Common
         /// The maximum number of points to add per frame.
         /// </summary>
         [Tooltip("The maximum number of points to add per frame.")]
-        public int MaxPointsToAddPerFrame = 100;
+        public int MaxPointsToAddPerFrame = 200;
 
         /// <summary>
         /// The time interval that the pop animation lasts in seconds.
@@ -71,13 +92,13 @@ namespace GoogleARCore.Examples.Common
         /// The maximum number of points to show on the screen.
         /// </summary>
         [Tooltip("The maximum number of points to show on the screen.")]
-        [SerializeField] private int m_MaxPointCount = 1000;
+        [SerializeField] private int m_MaxPointCount = 10000;
 
         /// <summary>
         /// The default size of the points.
         /// </summary>
         [Tooltip("The default size of the points.")]
-        [SerializeField] private int m_DefaultSize = 2;
+        [SerializeField] private int m_DefaultSize = 5;
 
         /// <summary>
         /// The maximum size that the points will have when they pop.
@@ -136,13 +157,18 @@ namespace GoogleARCore.Examples.Common
         private int m_Frames;
         private static int pCount;
         private Vector3 m_prevARPosePosition;
-        public Pose initPose;
-        public Pose curPose;
         public Pose poseTransform;
 
-        private Vector3 minVals = new Vector3(-0.9f, -1.7f, 0.2f);
-        private Vector3 maxVals = new Vector3(1f, 0.2f, 3f);
-        //        private int m_init;
+        /// <summary>
+        /// match cube
+        /// </summary>
+      //  private Vector3 minVals = new Vector3(-0.9f, -1.7f, 0.2f);
+      //  private Vector3 maxVals = new Vector3(1f, 0.2f, 3f);
+
+        private Vector3 minVals = new Vector3(-0.75f, -0.5f, 0.2f);
+        private Vector3 maxVals = new Vector3(0.75f, 0.1f, 1.5f);
+        public static float setConf = 0.25f;
+        Camera cam;
 
         /// <summary>
         /// The Unity Start() method.
@@ -155,7 +181,6 @@ namespace GoogleARCore.Examples.Common
             {
                 m_Mesh = new Mesh();
             }
-
 
             m_Mesh.Clear();
 
@@ -180,11 +205,15 @@ namespace GoogleARCore.Examples.Common
 
             m_CachedPoints = new LinkedList<PointInfo>();
             m_SavedPoints = new LinkedList<PointInfo>();
-            initPose = Frame.Pose;
-//            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-//            s.Connect(HostIP, port);
-            //ExportSetUp();
-            //HelloAR.Connection.Connect();
+
+            pathT = Application.persistentDataPath + @"/PointsTrans.txt";
+            path = Application.persistentDataPath + @"/Points.txt";
+            srT = new StreamWriter(pathT);
+            sr = new StreamWriter(path);
+
+
+            ///// ANCHORS
+            //////FOR CUBE ////
 
         }
 
@@ -220,12 +249,10 @@ namespace GoogleARCore.Examples.Common
                 _UpdateColor();
             }
 
-            _AddAllPointsToCache();
+            // _AddAllPointsToCache();
             //_AddAllPointsToSave();
+            ExportMeshPoints();
             _UpdateMesh();
-            //ExportMeshPoints();
-            ExportPoints();
-            //IncrementSend();
         }
 
         /// <summary>
@@ -237,49 +264,117 @@ namespace GoogleARCore.Examples.Common
             m_Mesh.Clear();
         }
 
-        public void ExportSetUp()
+
+        public void ExportMeshPoints()
         {
-           // Path of file
-        string path = Application.persistentDataPath + @"/Points.txt";
+            cam = GetComponent<Camera>();
+            string buff = "";
+            string buffT = "";
+            m_Track = 0;
 
-        // Create Writing Object
-        StreamWriter sr = new StreamWriter(path);
-          
-            // Create File if it doesnt exist
-            if (!File.Exists(path)) {
-                Debug.Log(path + " doesn't exist... Creating...");
-                sr = File.CreateText(path);
-                sr.WriteLine("Points \n");
-                    }
-            else
+            if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
             {
-                Debug.Log(path + " Does exist... Clearing...");
-                sr = File.CreateText(path);
-                sr.WriteLine("Points: \n");
+                f_Track += 1;
+                curPose = Frame.Pose;
+                string curPosePos = curPose.position.x + " " + curPose.position.y + " " + curPose.position.z + " ";
+            //    string curPoseRot = curPose.rotation.w + " " + curPose.rotation.x + " " + curPose.rotation.y + " " + curPose.rotation.z + " ";
+                buff = curPosePos;
+                //CreateaAnchor();
+
+                //anchor_old
+                // Create the anchor at that point.
+                if (f_Track == 1)
+                {
+                    anchor_new = Session.CreateAnchor(poseHome);
+
+                   // anchor_new.transform.position
+
+                   // transform.position = poseHome.position;
+                   // transform.rotation = poseHome.rotation;
+                   // transform.parent = anchor_new.transform;
+                    //anchor_new.
+                }
+
+                else
+                {
+                    //   curPose = new Pose(anchor_new.transform.position, anchor_new.transform.rotation);
+                    if (anchor_new.transform.hasChanged)
+                    {
+                        OffsetPos = anchor_new.transform.position;// - poseHome.position;
+                        //anchor_new.transform.
+                        OffsetRot = anchor_new.transform.rotation;// * poseHome.rotation;
+                        string Text_Offset = "x: " + OffsetPos.x + "\n" + "y: " + OffsetPos.y + "\n" + "z: " + OffsetPos.z;
+                      //  string Text_Offset = OffsetPos.ToString();
+                        string Text_Rot = "w: " + OffsetRot.w + "\nx: " + OffsetRot.x + "\ny: " + OffsetRot.y +"\nz: " + OffsetRot.z;
+                        string Text_Conf = "C: " + setConf;
+                     //   string Text_Rot = OffsetRot.ToString();
+                        //TextUpdate.UpdateText(Text_Offset);
+                        TextUpdate.t_offSet = Text_Offset;
+                        TextUpdate.t_roTate = Text_Rot;
+                        TextUpdate.t_conf = Text_Conf;
+
+                        //  OffsetRot = Quaternion.Inverse(curPose.rotation);
+                    }
+
+                }
+                
+                //OffsetPos = anchor_new.transform.po
+                //OffsetRot = anchor_new.transform.rotation - rotHome;
+
+                for (int i = 0; i<Frame.PointCloud.PointCount; i++)
+                {
+                    Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
+                    Vector3 pointT = Frame.PointCloud.GetPointAsStruct(i);
+
+/*                    Vector3 pointScreen = Frame.PointCloud.GetPointAsStruct(i);
+                    Vector3 vectTransform = transform.TransformPoint(pointScreen);
+                    Vector3 screenCoords = cam.WorldToScreenPoint(vectTransform);
+                    Vector2 uv = new Vector2(screenCoords.x, screenCoords.y); */
+
+                    Vector3 Newpoint = anchor_new.transform.InverseTransformPoint(pointT);
+                    int idPoint = Frame.PointCloud.GetPointAsStruct(i).Id;
+                    float conf = Frame.PointCloud.GetPointAsStruct(i).Confidence;
+                    //Vector3 Newpoint = transform.InverseTransformPoint(point);
+
+              
+                        //            newPoint = (transform.position.x,
+                        // detectedPlane.CenterPose.position.y + yOffset, transform.position.z);
+
+                    // sr.WriteLine(buff);
+                    if (point.x<minVals.x || point.y<minVals.y || point.z<minVals.z ||
+                        point.x> maxVals.x || point.y> maxVals.y || point.z> maxVals.z || conf < setConf)
+                    {
+                        continue;
+                    }
+
+                    _AddPointToCache(Frame.PointCloud.GetPointAsStruct(i));
+                    string content = idPoint + " " + point.x + " " + point.y + " " + point.z + " ";// +" " + conf + "\n";
+                    buffT += content;
+                    string contentT = idPoint + " " + Newpoint.x + " " + Newpoint.y + " " + Newpoint.z + " ";// + conf + "\n";
+                    buff += contentT;
+                        //Vector3 pos = Frame.Pose.position;
+                        //Quaternion rot = Frame.Pose.rotation;
+
+                        //curPose = Frame.Pose;
+                        //poseTransform = curPose.GetTransformedBy(initPose);
+                        //Vector3 newPoint = transform.TransformPoint(point);
+                        //Vector3 newpoint = point, poseTransform.rotation);
+                        //Vector3 curPost = Frame.Pose.position;
+                        //string content = m_Track + "," + newPoint.x + "," + newPoint.y + "," + newPoint.z + "," + point.x + "," + point.y + "," + point.z ;
+                        //string content = m_Track + "," + point.x + "," + point.y + "," + point.z + "," + pos.x + "," + pos.y + "," + pos.z + "," + rot.w + "," + rot.x + "," + rot.y + "," + rot.z;
+                        //HelloAR.Connection.WriteString(buff);
+                    m_Track += 1;
+                    
+                }
+                //   sr.WriteLine(buff);
+                if (m_Track != 0)
+                {
+                    HelloAR.Connection.WriteString(m_Track, buff);
+                    sr.WriteLine(buffT);
+                }
+             //   HelloAR.Connection.WriteString(m_Track, buff);
             }
-        sr.Close();
         }
-
-        
-
-        //public void ExportMeshPoints()
-        //{
-        //    m_Frames++;
-        //    string path = Application.persistentDataPath + @"/PointsCache.txt";
-        //    StreamWriter sr1 = new StreamWriter(path);
-        //    int count = 1;
-        //    //m_SaveMesh.vertices = m_SavedPoints.Select(p => p.Position).ToArray();
-        //    var pts = m_CachedPoints.Select(p => p.Position).ToArray();
-        //    foreach (Vector3 m_vec in pts) {
-        //        string m_Print = m_vec.x + " " + m_vec.y + " " + m_vec.z;
-        //        sr1.WriteLine(m_Print);
-        //        //HelloAR.Connection.Write(m_vec);
-        //        count++;
-        //    }
-        //  //  Debug.Log("Frame: " + m_Frames + " Wrote: " + count + " Points \n"); 
-        //    sr1.Close();
-
-        //}
 
         public void ExportPoints()
         {
@@ -429,6 +524,14 @@ namespace GoogleARCore.Examples.Common
             {
                 for (int i = 0; i < Frame.PointCloud.PointCount; i++)
                 {
+                    Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
+                    float conf = Frame.PointCloud.GetPointAsStruct(i).Confidence;
+
+                    if (point.x < minVals.x || point.y < minVals.y || point.z < minVals.z ||
+                        point.x > maxVals.x || point.y > maxVals.y || point.z > maxVals.z || conf < 0.3)
+                    {
+                        continue;
+                    }
                     _AddPointToCache(Frame.PointCloud.GetPointAsStruct(i));
                 }
             }
@@ -443,6 +546,7 @@ namespace GoogleARCore.Examples.Common
             {
                 for (int i = 0; i < Frame.PointCloud.PointCount; i++)
                 {
+
                     _AddPointToSave(Frame.PointCloud.GetPointAsStruct(i));
 
                 }
