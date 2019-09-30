@@ -43,7 +43,7 @@
             byte[] sBytes = Encoding.ASCII.GetBytes(buffSend);
             int size = sBytes.Length;
             string sizeSend = size.ToString();
-            Debug.LogError(sizeSend);
+//            Debug.LogError(sizeSend);
             //SEND
             s.Send(nSend);
             s.Send(sBytes);

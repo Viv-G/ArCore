@@ -370,7 +370,7 @@ namespace GoogleARCore.Examples.Common
                 if (m_Track != 0)
                 {
                     HelloAR.Connection.WriteString(m_Track, buff);
-                    sr.WriteLine(buffT);
+                 //   sr.WriteLine(buffT);
                 }
              //   HelloAR.Connection.WriteString(m_Track, buff);
             }
@@ -426,29 +426,6 @@ namespace GoogleARCore.Examples.Common
             //sr.Close();
             }
 
-        //public static void IncrementSend()
-        //{
-        //    //// Path of file
-        //    string path = Application.persistentDataPath + @"/PointsIncrement.txt";
-        //    StreamWriter sr1 = new StreamWriter(path, append: true);
-        //    string buff = "";
-        //    int pc = pCount;
-        //    // Content of the file
-        //    if (Frame.PointCloud.PointCount > 0 && Frame.PointCloud.IsUpdatedThisFrame)
-        //    {
-        //        for (int i = pc; i < Frame.PointCloud.PointCount; i++)
-        //        {
-        //            Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
-        //            string content = i + " " + point.x + " " + point.y + " " + point.z + "\n";
-        //            buff += content;
-        //            //HelloAR.Connection.WriteString(buff);
-        //            //m_Track += 1;
-        //            pCount++;
-        //        }
-        //        sr1.WriteLine(buff);
-
-        //    }
-        //}
 
         private void _ClearSavedPoints()
         {
