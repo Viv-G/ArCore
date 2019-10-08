@@ -1,14 +1,13 @@
 ﻿<Properties StartupConfiguration="{CB0AE3AE-CDCE-9764-CA59-59A2E0551C13}|">
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/GoogleARCore/Examples/Common/Scripts/PointcloudVisualizer.cs">
     <Files>
-      <File FileName="Assets/GoogleARCore/Examples/Common/Scripts/PointcloudVisualizer.cs" Line="171" Column="20" />
-      <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/Connection.cs" />
+      <File FileName="Assets/GoogleARCore/Examples/Common/Scripts/PointcloudVisualizer.cs" Line="379" Column="10" />
+      <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/Connection.cs" Line="46" Column="3" />
       <File FileName="Assets/GoogleARCore/SDK/Scripts/Frame.cs" />
       <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/EntryScript.cs" />
       <File FileName="Assets/GoogleARCore/SDK/Scripts/Anchor.cs" />
       <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/AnchorTrack.cs" />
-      <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/TextUpdate.cs" />
-      <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/BoxController.cs" />
+      <File FileName="Assets/GoogleARCore/Examples/HelloAR/Scripts/HelloARController.cs" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,6 +15,7 @@
           <Node name="ArCore" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="GoogleARCore" expanded="True">
+                <Node name="Editor" expanded="True" />
                 <Node name="Examples" expanded="True">
                   <Node name="Common" expanded="True">
                     <Node name="Scripts" expanded="True">
@@ -25,9 +25,6 @@
                   <Node name="HelloAR" expanded="True">
                     <Node name="Scripts" expanded="True" />
                   </Node>
-                </Node>
-                <Node name="SDK" expanded="True">
-                  <Node name="Scripts" expanded="True" />
                 </Node>
               </Node>
             </Node>

@@ -165,7 +165,7 @@ namespace GoogleARCore.Examples.Common
       //  private Vector3 minVals = new Vector3(-0.9f, -1.7f, 0.2f);
       //  private Vector3 maxVals = new Vector3(1f, 0.2f, 3f);
 
-        private Vector3 minVals = new Vector3(-0.75f, -0.5f, 0.2f);
+        private Vector3 minVals = new Vector3(-0.75f, -1f, 0.2f);
         private Vector3 maxVals = new Vector3(0.75f, 0.1f, 1.5f);
         public static float setConf = 0.25f;
         Camera cam;
@@ -323,7 +323,7 @@ namespace GoogleARCore.Examples.Common
 
                 for (int i = 0; i<Frame.PointCloud.PointCount; i++)
                 {
-                    Vector3 point = Frame.PointCloud.GetPointAsStruct(i);
+                    Vector3 point = Frame.PointCloud.GetPointAsStruct(i); // -UNTRANSFORMED
                     Vector3 pointT = Frame.PointCloud.GetPointAsStruct(i);
 
 /*                    Vector3 pointScreen = Frame.PointCloud.GetPointAsStruct(i);
@@ -347,11 +347,13 @@ namespace GoogleARCore.Examples.Common
                         continue;
                     }
 
-                    _AddPointToCache(Frame.PointCloud.GetPointAsStruct(i));
+                    //   _AddPointToCache(Frame.PointCloud.GetPointAsStruct(i));
+                    _AddPointToCache(point);
                     string content = idPoint + " " + point.x + " " + point.y + " " + point.z + " ";// +" " + conf + "\n";
-                    buffT += content;
+                    buff += content;
+
                     string contentT = idPoint + " " + Newpoint.x + " " + Newpoint.y + " " + Newpoint.z + " ";// + conf + "\n";
-                    buff += contentT;
+                    buffT += contentT;
                         //Vector3 pos = Frame.Pose.position;
                         //Quaternion rot = Frame.Pose.rotation;
 

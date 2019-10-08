@@ -5,7 +5,10 @@ ScriptsOnlyBuild:
     - GoogleARCore.ARCoreSession
     - GoogleARCore.ARCoreSessionConfig
     - GoogleARCore.EnvironmentalLight
+    - GoogleARCore.Examples.Common.DetectedPlaneVisualizer
+    - GoogleARCore.Examples.Common.PlaneDiscoveryGuide
     - GoogleARCore.Examples.Common.PointcloudVisualizer
+    - GoogleARCore.Examples.Common.RawImageVideoPlayer
     - GoogleARCore.Examples.Common.TextUpdate
     - GoogleARCore.Examples.EntryScript
     - GoogleARCore.Examples.HelloAR.BoxController
@@ -24,6 +27,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
     - UnityEngine.UI.InputField
+    - UnityEngine.UI.RawImage
     - UnityEngine.UI.Text
   sceneClasses:
     Assets/GoogleARCore/Examples/HelloAR/Scenes/Entry.unity:
@@ -132,6 +136,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 12030}
     - Class: 114
       Script: {instanceID: 12324}
+    - Class: 114
+      Script: {instanceID: 12462}
     - Class: 114
       Script: {instanceID: 12752}
     - Class: 114
@@ -819,6 +825,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlaneVisualizationManager
   platform: 13
   scenePathNames:
   - Assets/GoogleARCore/Examples/HelloAR/Scenes/Entry.unity

@@ -38,7 +38,7 @@
             //    transform.SetParent(box_Anchor.transform);
         Vector3[] positions = new Vector3[4];
         Vector3[] positions1 = new Vector3[4];
-        Vector3[] positions2 = new Vector3[3];
+        Vector3[] positions2 = new Vector3[4];
         Vector3[] positions3 = new Vector3[4];
 
 
